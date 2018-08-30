@@ -1,9 +1,10 @@
-﻿Shader "Demo/NormalMap"
+﻿Shader "Demo/Knight"
 {
 	Properties
 	{
         _MainTex ("Main Texture", 2D) = "white" {}
         _NormaMap ("Normal Map", 2D) = "bump" {}
+        _NormalPower ("Normal Power", Float) = 1
         _SpecularTex ("Specular Texture", 2D) = "white" {}
         _DiffuseMatCapTex ("Diffuse MatCap Texture", 2D) = "white" {}
         _DiffuseMatCapPower ("Diffuse MatCap Power", Float) = 1
@@ -29,16 +30,16 @@
 
 			struct appdata
 			{
-				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
+				fixed4 vertex : POSITION;
+				fixed2 uv : TEXCOORD0;
                 fixed3 normal : NORMAL;
                 fixed4 tangent : TANGENT;
 			};
 
 			struct v2f
 			{
-				float4 uv : TEXCOORD0;
-				float4 vertex : SV_POSITION;
+				fixed4 uv : TEXCOORD0;
+				fixed4 vertex : SV_POSITION;
                 fixed3 lightDir : TEXCOORD1;
                 fixed3 viewDir : TEXCOORD2;
 			};
@@ -47,6 +48,7 @@
             fixed4 _MainTex_ST;
    
             sampler2D _NormaMap;
+            fixed _NormalPower;
 
             sampler2D _SpecularTex;
 
@@ -80,8 +82,8 @@
 
                 fixed4 mainCol = tex2D(_MainTex, i.uv.xy);
                 fixed4 specCol = tex2D(_SpecularTex, i.uv.xy);
-                fixed4 diffuseMatCapCol = tex2D(_DiffuseMatCapTex, i.uv.zw + normalBias);
-                fixed4 specularMatCapCol = tex2D(_SpecularMatCapTex, i.uv.zw + normalBias);
+                fixed4 diffuseMatCapCol = tex2D(_DiffuseMatCapTex, i.uv.zw + normalBias * _NormalPower);
+                fixed4 specularMatCapCol = tex2D(_SpecularMatCapTex, i.uv.zw + normalBias * _NormalPower);
                 fixed4 rimMatCapCol = tex2D(_RimMatCapTex, i.uv.zw);
 
                 fixed4 finalCol = mainCol;
