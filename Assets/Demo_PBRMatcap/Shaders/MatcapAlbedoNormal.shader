@@ -36,7 +36,6 @@
 				float2 uv_normal : TEXCOORD1;
 				float3 TtoV[3] : TEXCOORD2;
 				float3 viewDir : TEXCOORD5;
-				float3 worldNormal : TEXCOORD6;
             };
 
             sampler2D _MainTex;
@@ -54,7 +53,6 @@
                 o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
 				o.uv_normal = TRANSFORM_TEX(v.texcoord, _Matcap);
 				o.viewDir = UnityObjectToViewPos(v.vertex);
-				o.worldNormal = UnityObjectToWorldNormal(v.normal);
 
 				fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
 				fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);
