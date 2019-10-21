@@ -443,7 +443,8 @@ half4 fragForwardBaseInternal (VertexOutputForwardBase i)
     half occlusion = Occlusion(i.tex.xy);
     UnityGI gi = FragmentGI (s, occlusion, i.ambientOrLightmapUV, atten, mainLight);
 
-	fixed2 tex_matcap = s.normalWorld.xy * 0.5 + 0.5;
+	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, s.normalWorld);
+	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
 	fixed4 matcapCol = tex2D(_Matcap, tex_matcap);
 	matcapCol *= _MatcapPower;
 	s.diffColor *= matcapCol;
@@ -539,7 +540,8 @@ half4 fragForwardAddInternal (VertexOutputForwardAdd i)
     UnityLight light = AdditiveLight (IN_LIGHTDIR_FWDADD(i), atten);
     UnityIndirect noIndirect = ZeroIndirect ();
 
-	fixed2 tex_matcap = s.normalWorld.xy * 0.5 + 0.5;
+	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, s.normalWorld);
+	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
 	fixed4 matcapCol = tex2D(_Matcap, tex_matcap);
 	matcapCol *= _MatcapPower;
 	s.diffColor *= matcapCol;
@@ -675,7 +677,8 @@ void fragDeferred (
 
     UnityGI gi = FragmentGI (s, occlusion, i.ambientOrLightmapUV, atten, dummyLight, sampleReflectionsInDeferred);
 
-	fixed2 tex_matcap = s.normalWorld.xy * 0.5 + 0.5;
+	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, s.normalWorld);
+	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
 	fixed4 matcapCol = tex2D(_Matcap, tex_matcap);
 	matcapCol *= _MatcapPower;
 	s.diffColor *= matcapCol;

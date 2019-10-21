@@ -205,10 +205,12 @@ half4 fragForwardBaseSimpleInternal (VertexOutputBaseSimple i)
 
     #if !defined(LIGHTMAP_ON) && defined(_NORMALMAP)
     half ndotl = saturate(dot(s.tangentSpaceNormal, i.tangentSpaceLightDir));
-	fixed2 tex_matcap = s.tangentSpaceNormal.xy * 0.5 + 0.5;
+	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, s.tangentSpaceNormal);
+	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
     #else
     half ndotl = saturate(dot(s.normalWorld, mainLight.dir));
-	fixed2 tex_matcap = s.normalWorld.xy * 0.5 + 0.5;
+	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, s.normalWorld);
+	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
     #endif
 
     //we can't have worldpos here (not enough interpolator on SM 2.0) so no shadow fade in that case.
@@ -360,7 +362,8 @@ half4 fragForwardAddSimpleInternal (VertexOutputForwardAddSimple i)
 
     FragmentCommonData s = FragmentSetupSimpleAdd(i);
 
-	fixed2 tex_matcap = LightSpaceNormal(i, s).xy * 0.5 + 0.5;
+	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, LightSpaceNormal(i, s));
+	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
 	fixed4 matcapCol = tex2D(_Matcap, tex_matcap);
 	matcapCol *= _MatcapPower;
 	s.diffColor *= matcapCol;
