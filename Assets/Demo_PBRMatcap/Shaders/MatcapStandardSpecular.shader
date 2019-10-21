@@ -32,8 +32,10 @@ Shader "Matcap/Standard (Specular setup)"
 
         _DetailMask("Detail Mask", 2D) = "white" {}
 
-		_Matcap ("Matcap", 2D) = "white" {}
-		_MatcapPower ("Matcap Power", Float) = 1
+		_AlbedoMatcapTex ("Albedo Matcap", 2D) = "white" {}
+		_AlbedoMatcapPower ("Albedo Matcap Power", Float) = 1
+		_SpecularMatcapTex ("Specular Matcap", 2D) = "white" {}
+		_SpecularMatcapPower ("Specular Matcap Power", Float) = 1
 
         _DetailAlbedoMap("Detail Albedo x2", 2D) = "grey" {}
         _DetailNormalMapScale("Scale", Float) = 1.0

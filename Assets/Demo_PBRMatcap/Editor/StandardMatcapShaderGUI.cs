@@ -46,8 +46,10 @@ namespace UnityEditor
             public static GUIContent occlusionText = EditorGUIUtility.TrTextContent("Occlusion", "Occlusion (G)");
             public static GUIContent emissionText = EditorGUIUtility.TrTextContent("Color", "Emission (RGB)");
             public static GUIContent detailMaskText = EditorGUIUtility.TrTextContent("Detail Mask", "Mask for Secondary Maps (A)");
-            public static GUIContent matcapText = EditorGUIUtility.TrTextContent("Matcap", "Matcap");
-            public static GUIContent matcapPowerText = EditorGUIUtility.TrTextContent("Matcap Power", "Matcap Power");
+            public static GUIContent albedoMatcapText = EditorGUIUtility.TrTextContent("Albedo Matcap", "Albedo Matcap");
+            public static GUIContent albedoMatcapPowerText = EditorGUIUtility.TrTextContent("Albedo Matcap Power", "Albedo Matcap Power");
+            public static GUIContent specularMatcapText = EditorGUIUtility.TrTextContent("Specular Matcap", "Specular Matcap");
+            public static GUIContent specularMatcapPowerText = EditorGUIUtility.TrTextContent("Specular Matcap Power", "Specular Matcap Power");
             public static GUIContent detailAlbedoText = EditorGUIUtility.TrTextContent("Detail Albedo x2", "Albedo (RGB) multiplied by 2");
             public static GUIContent detailNormalMapText = EditorGUIUtility.TrTextContent("Normal Map", "Normal Map");
 
@@ -81,8 +83,10 @@ namespace UnityEditor
         MaterialProperty emissionColorForRendering = null;
         MaterialProperty emissionMap = null;
         MaterialProperty detailMask = null;
-        MaterialProperty matcap = null;
-        MaterialProperty matcapPower = null;
+        MaterialProperty albedoMatcapTex = null;
+        MaterialProperty albedoMatcapPower = null;
+        MaterialProperty specularMatcapTex = null;
+        MaterialProperty specularMatcapPower = null;
         MaterialProperty detailAlbedoMap = null;
         MaterialProperty detailNormalMapScale = null;
         MaterialProperty detailNormalMap = null;
@@ -123,8 +127,10 @@ namespace UnityEditor
             emissionColorForRendering = FindProperty("_EmissionColor", props);
             emissionMap = FindProperty("_EmissionMap", props);
             detailMask = FindProperty("_DetailMask", props);
-            matcap = FindProperty("_Matcap", props);
-            matcapPower = FindProperty("_MatcapPower", props);
+            albedoMatcapTex = FindProperty("_AlbedoMatcapTex", props);
+            albedoMatcapPower = FindProperty("_AlbedoMatcapPower", props);
+            specularMatcapTex = FindProperty("_SpecularMatcapTex", props);
+            specularMatcapPower = FindProperty("_SpecularMatcapPower", props);
             detailAlbedoMap = FindProperty("_DetailAlbedoMap", props);
             detailNormalMapScale = FindProperty("_DetailNormalMapScale", props);
             detailNormalMap = FindProperty("_DetailNormalMap", props);
@@ -167,8 +173,6 @@ namespace UnityEditor
                 m_MaterialEditor.TexturePropertySingleLine(Styles.heightMapText, heightMap, heightMap.textureValue != null ? heigtMapScale : null);
                 m_MaterialEditor.TexturePropertySingleLine(Styles.occlusionText, occlusionMap, occlusionMap.textureValue != null ? occlusionStrength : null);
                 m_MaterialEditor.TexturePropertySingleLine(Styles.detailMaskText, detailMask);
-                m_MaterialEditor.TexturePropertySingleLine(Styles.matcapText, matcap);
-                m_MaterialEditor.ShaderProperty(matcapPower, Styles.matcapPowerText, 2);
                 DoEmissionArea(material);
                 EditorGUI.BeginChangeCheck();
                 m_MaterialEditor.TextureScaleOffsetProperty(albedoMap);
@@ -284,6 +288,9 @@ namespace UnityEditor
             {
                 m_MaterialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoffText.text, MaterialEditor.kMiniTextureFieldLabelIndentLevel + 1);
             }
+
+            m_MaterialEditor.TexturePropertySingleLine(Styles.albedoMatcapText, albedoMatcapTex);
+            m_MaterialEditor.ShaderProperty(albedoMatcapPower, Styles.albedoMatcapPowerText, 2);
         }
 
         void DoEmissionArea(Material material)
@@ -334,6 +341,9 @@ namespace UnityEditor
             ++indentation;
             if (smoothnessMapChannel != null)
                 m_MaterialEditor.ShaderProperty(smoothnessMapChannel, Styles.smoothnessMapChannelText, indentation);
+
+            m_MaterialEditor.TexturePropertySingleLine(Styles.specularMatcapText, specularMatcapTex);
+            m_MaterialEditor.ShaderProperty(specularMatcapPower, Styles.specularMatcapPowerText, 2);
         }
 
         public static void SetupMaterialWithBlendMode(Material material, BlendMode blendMode)

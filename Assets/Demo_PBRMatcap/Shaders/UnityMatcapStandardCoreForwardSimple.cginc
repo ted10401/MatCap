@@ -224,10 +224,12 @@ half4 fragForwardBaseSimpleInternal (VertexOutputBaseSimple i)
     UnityGI gi = FragmentGI (s, occlusion, i.ambientOrLightmapUV, atten, mainLight);
     half3 attenuatedLightColor = gi.light.color * ndotl;
 
-	fixed4 matcapCol = tex2D(_Matcap, tex_matcap);
-	matcapCol *= _MatcapPower;
-	s.diffColor *= matcapCol;
-	s.specColor *= matcapCol;
+	fixed4 albedoMatcapCol = tex2D(_AlbedoMatcapTex, tex_matcap);
+	albedoMatcapCol *= _AlbedoMatcapPower;
+	s.diffColor *= albedoMatcapCol;
+	fixed4 specularMatcapCol = tex2D(_SpecularMatcapTex, tex_matcap);
+	specularMatcapCol *= _SpecularMatcapPower;
+	s.specColor *= specularMatcapCol;
 
     half3 c = BRDF3_Indirect(s.diffColor, s.specColor, gi.indirect, PerVertexGrazingTerm(i, s), PerVertexFresnelTerm(i));
     c += BRDF3DirectSimple(s.diffColor, s.specColor, s.smoothness, rl) * attenuatedLightColor;
@@ -364,10 +366,12 @@ half4 fragForwardAddSimpleInternal (VertexOutputForwardAddSimple i)
 
 	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, LightSpaceNormal(i, s));
 	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
-	fixed4 matcapCol = tex2D(_Matcap, tex_matcap);
-	matcapCol *= _MatcapPower;
-	s.diffColor *= matcapCol;
-	s.specColor *= matcapCol;
+	fixed4 albedoMatcapCol = tex2D(_AlbedoMatcapTex, tex_matcap);
+	albedoMatcapCol *= _AlbedoMatcapPower;
+	s.diffColor *= albedoMatcapCol;
+	fixed4 specularMatcapCol = tex2D(_SpecularMatcapTex, tex_matcap);
+	specularMatcapCol *= _SpecularMatcapPower;
+	s.specColor *= specularMatcapCol;
 
     half3 c = BRDF3DirectSimple(s.diffColor, s.specColor, s.smoothness, dot(REFLECTVEC_FOR_SPECULAR(i, s), i.lightDir));
 

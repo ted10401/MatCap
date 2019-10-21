@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AlbedoMatcapTex:
+        m_Texture: {fileID: 2800000, guid: fb8bf055049cc8b4696e6e9653f4f239, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: b5ca4903d2846414ba51f2e832317d37, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -67,7 +71,12 @@ Material:
         m_Texture: {fileID: 2800000, guid: 942223775a92f2a468cce9474b0fab91, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecularMatcapTex:
+        m_Texture: {fileID: 2800000, guid: f1ee56bec2031554ba5895ce48612ddc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AlbedoMatcapPower: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -82,6 +91,7 @@ Material:
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _SpecularMatcapPower: 2
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1

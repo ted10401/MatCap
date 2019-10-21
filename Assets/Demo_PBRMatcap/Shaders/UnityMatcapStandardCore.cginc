@@ -14,8 +14,10 @@
 
 #include "AutoLight.cginc"
 
-sampler2D _Matcap;
-float _MatcapPower;
+sampler2D _AlbedoMatcapTex;
+float _AlbedoMatcapPower;
+sampler2D _SpecularMatcapTex;
+float _SpecularMatcapPower;
 
 //-------------------------------------------------------------------------------------
 // counterpart for NormalizePerPixelNormal
@@ -445,10 +447,12 @@ half4 fragForwardBaseInternal (VertexOutputForwardBase i)
 
 	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, s.normalWorld);
 	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
-	fixed4 matcapCol = tex2D(_Matcap, tex_matcap);
-	matcapCol *= _MatcapPower;
-	s.diffColor *= matcapCol;
-	s.specColor *= matcapCol;
+	fixed4 albedoMatcapCol = tex2D(_AlbedoMatcapTex, tex_matcap);
+	albedoMatcapCol *= _AlbedoMatcapPower;
+	s.diffColor *= albedoMatcapCol;
+	fixed4 specularMatcapCol = tex2D(_SpecularMatcapTex, tex_matcap);
+	specularMatcapCol *= _SpecularMatcapPower;
+	s.specColor *= specularMatcapCol;
 
     half4 c = UNITY_BRDF_PBS (s.diffColor, s.specColor, s.oneMinusReflectivity, s.smoothness, s.normalWorld, -s.eyeVec, gi.light, gi.indirect);
     c.rgb += Emission(i.tex.xy);
@@ -542,10 +546,12 @@ half4 fragForwardAddInternal (VertexOutputForwardAdd i)
 
 	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, s.normalWorld);
 	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
-	fixed4 matcapCol = tex2D(_Matcap, tex_matcap);
-	matcapCol *= _MatcapPower;
-	s.diffColor *= matcapCol;
-	s.specColor *= matcapCol;
+	fixed4 albedoMatcapCol = tex2D(_AlbedoMatcapTex, tex_matcap);
+	albedoMatcapCol *= _AlbedoMatcapPower;
+	s.diffColor *= albedoMatcapCol;
+	fixed4 specularMatcapCol = tex2D(_SpecularMatcapTex, tex_matcap);
+	specularMatcapCol *= _SpecularMatcapPower;
+	s.specColor *= specularMatcapCol;
 
     half4 c = UNITY_BRDF_PBS (s.diffColor, s.specColor, s.oneMinusReflectivity, s.smoothness, s.normalWorld, -s.eyeVec, light, noIndirect);
 	
@@ -679,10 +685,12 @@ void fragDeferred (
 
 	float3 viewNormal = mul((float3x3)UNITY_MATRIX_V, s.normalWorld);
 	fixed2 tex_matcap = viewNormal.xy * 0.5 + 0.5;
-	fixed4 matcapCol = tex2D(_Matcap, tex_matcap);
-	matcapCol *= _MatcapPower;
-	s.diffColor *= matcapCol;
-	s.specColor *= matcapCol;
+	fixed4 albedoMatcapCol = tex2D(_AlbedoMatcapTex, tex_matcap);
+	albedoMatcapCol *= _AlbedoMatcapPower;
+	s.diffColor *= albedoMatcapCol;
+	fixed4 specularMatcapCol = tex2D(_SpecularMatcapTex, tex_matcap);
+	specularMatcapCol *= _SpecularMatcapPower;
+	s.specColor *= specularMatcapCol;
 
     half3 emissiveColor = UNITY_BRDF_PBS (s.diffColor, s.specColor, s.oneMinusReflectivity, s.smoothness, s.normalWorld, -s.eyeVec, gi.light, gi.indirect).rgb;
 
