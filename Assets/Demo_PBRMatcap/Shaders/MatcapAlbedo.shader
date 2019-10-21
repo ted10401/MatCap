@@ -38,15 +38,24 @@
 			sampler2D _Matcap;
 			float _MatcapPower;
 
+			float2 getMatcapUV(float3 viewNormal, float3 viewDir)
+			{
+				float3 viewCross = cross(viewDir, viewNormal);
+				viewNormal = float3(-viewCross.y, viewCross.x, 0.0);
+				viewNormal = viewNormal * 0.5 + 0.5;
+				return viewNormal.xy;
+			}
+
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				
-				float3 viewNormal = mul(UNITY_MATRIX_IT_MV, v.normal);
-				viewNormal = viewNormal * 0.5 + 0.5;
-				o.uv_matcap = viewNormal.xy;
+
+				float3 viewNormal = normalize(mul(UNITY_MATRIX_MV, v.normal));
+				float3 viewPos = UnityObjectToViewPos(v.vertex);
+                float3 viewDir = normalize(viewPos);
+				o.uv_matcap = getMatcapUV(viewNormal, viewDir);
 
                 return o;
             }
